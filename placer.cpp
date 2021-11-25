@@ -607,7 +607,7 @@ namespace placer
                         std::end( result.candidates ) ,
                         []( const candidate& x , const candidate& y ) {
                             return std::to_string( x.id ).size() <
-                                std::to_string( y.id ).size();
+                                   std::to_string( y.id ).size();
                         }
                     )->id
                 )
