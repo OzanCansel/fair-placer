@@ -7,6 +7,7 @@
 #include <iomanip>
 #include <iostream>
 #include <cmath>
+#include <type_traits>
 
 namespace placer
 {
@@ -579,6 +580,14 @@ namespace placer
         print_summary( result.scores );
     }
 
+    template<typename T>
+    int num_of_digits( T num )
+    {
+        static_assert( std::is_integral_v<T> , "T must be a integral type." );
+
+        return std::floor( std::log10( num ) + 1 );
+    }
+
     void print_placement( std::filesystem::path placement_p )
     {
         auto base_dir = std::filesystem::absolute(
@@ -600,19 +609,17 @@ namespace placer
             return;
 
         auto candidate_col_width = std::max(
-            std::size(
-                std::to_string(
-                    std::max_element(
-                        std::begin( result.candidates ) ,
-                        std::end( result.candidates ) ,
-                        []( const candidate& x , const candidate& y ) {
-                            return std::to_string( x.id ).size() <
-                                   std::to_string( y.id ).size();
-                        }
-                    )->id
-                )
+            num_of_digits(
+                std::max_element(
+                    std::begin( result.candidates ) ,
+                    std::end( result.candidates ) ,
+                    []( const candidate& x , const candidate& y ) {
+                        return std::abs( x.id ) <
+                                std::abs( y.id );
+                    }
+                )->id
             ) + 2 ,
-            std::size_t( 10 )
+            10
         );
 
         auto place_col_width = std::max(
@@ -642,19 +649,14 @@ namespace placer
         );
 
         auto score_col_width = std::max(
-            std::size(
-                std::to_string(
-                    std::max_element(
-                        std::begin( result.places ) ,
-                        std::end( result.places ) ,
-                        []( const place& x , const place& y ) {
-                            return std::to_string( x.hardness ).size() <
-                                   std::to_string( y.hardness ).size();
-                        }
-                    )->hardness
-                )
+            num_of_digits(
+                max_element(
+                    std::begin( result.places ) ,
+                    std::end( result.places ) ,
+                    std::greater<place> {}
+                )->hardness
             ) + 2 ,
-            std::size_t( 7 )
+            7
         );
 
         std::cout << std::setw( candidate_col_width ) << "candidate"
