@@ -77,7 +77,7 @@ namespace placer
         accumulator            scores;
     };
 
-    std::vector<std::string> read_lines( std::filesystem::path path , int skip =  1 )
+    std::vector<std::string> read_lines( std::filesystem::path path , int skip = 1 )
     {
         std::ifstream lines_f { path };
 
@@ -387,7 +387,7 @@ namespace placer
             );
 
             if ( ac == std::end( accumulator ) )
-                throw std::runtime_error { "'appointee' doesn't exist." };
+                throw std::runtime_error { "'candidate' doesn't exist." };
 
             ac->second += a.at.hardness;
         }
