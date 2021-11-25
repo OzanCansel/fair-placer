@@ -22,8 +22,8 @@ namespace placer
 
     struct block
     {
-        int id;
-        int slots;
+        int         id;
+        int         slots;
         std::string desc;
 
         friend bool operator ==( const block& x , const block& y )
@@ -34,8 +34,8 @@ namespace placer
 
     struct place
     {
-        int id;
-        int hardness;
+        int         id;
+        int         hardness;
         std::string desc;
 
         friend bool operator ==( const place& x , const place& y )
